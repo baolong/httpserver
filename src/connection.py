@@ -24,13 +24,12 @@ class connection(object):
         request_parse = HttpRequestParser()   #请求解析对象
         request_parse.parse(request)       #解析请求
         response = ResponseBuilder()      #响应对象
-        response.setHttpStatus(200)
+        response.setHttpStatus('200')
         response.setHttpReason('OK')
-        response.setHttpVersion(request_parse.GetVersion)
+        response.setHttpVersion(request_parse.GetVersion())
         headers = request_parse.GetHeaders()
         for key in headers:
             response.addHeader(key, headers[key])
         response.writeContent()
         result = response.getResult()
         self.connection.send(result)
-        print result

@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf8
-
+import sys
 import os
+sys.path.append('~/httpserver/src')
+from mime_types import filename_to_type
 
 class ResponseBuilder(object):
     def __init__(self):
-        self.status = ''
-        self.reason = ''
-        self.version = ''
+        self.status = None
+        self.reason = None
+        self.version = None
         self.headers = {}
     def setHttpStatus(self, status):   #设置响应状态
         self.status = status
@@ -23,17 +25,19 @@ class ResponseBuilder(object):
 
     def writeContent(self, filename = 'index.htm'):     #写入正文
         fp = open(filename)
+        self.context_type = filename_to_type(filename)
         self.length = os.path.getsize(filename)
         self.content = fp.read() 
-
+    
     def getResult(self):     #获取响应内容
         result = ''
-#        result += self.version + ' '
-        print 'version:'
-        print type(self.version)
-        print '\n'
+        result += self.version + ' '
         result += self.status + ' '
-        result += self.reason + '\n'
+        result += self.reason + '\r\n'
+        result += 'Content-Length: ' + str(self.length) + '\r\n'
+        result += 'Content-Type: ' + self.context_type + '\r\n'
         for key in self.headers:
-            result += key + ': ' + self.headers[key]
+            result += key + ': ' + self.headers[key] + '\r\n'
+        result += '\r\n'
+        result += self.content
         return result

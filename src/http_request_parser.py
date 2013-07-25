@@ -24,7 +24,6 @@ class HttpRequestParser(object):
         for ch in list[0][num:]:
             self.version += ch 
         
-        del list
         
         list = request_data.split('\n')
         for str in list[1:]:
