@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8
 
-class HttpRequestParser:
+class HttpRequestParser(object):
     def __init__(self):
         'http request parser'
         self.method = ''    #http请求方法
