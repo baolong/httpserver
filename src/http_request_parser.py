@@ -33,6 +33,7 @@ class HttpRequestParser(object):
                 break
             key, value = str.split(': ')
             self.headers[key] = value
+        print '请求:\n' + request_data
 
     def GetMethod(self):
         return self.method

@@ -2,8 +2,10 @@
 # -*- coding: utf8
 import sys
 import os
+from time import ctime
 sys.path.append('~/httpserver/src')
 from mime_types import filename_to_type
+from template import render
 
 class ResponseBuilder(object):
     def __init__(self):
@@ -24,11 +26,22 @@ class ResponseBuilder(object):
         self.headers[key] = value
 
     def writeContent(self, filename = 'index.htm'):     #写入正文
-        fp = open(filename)
+        if (filename == '/'):
+            filename = 'index.htm'
+        else:
+            filename = filename.lstrip('/')
         self.context_type = filename_to_type(filename)
         self.length = os.path.getsize(filename)
-        self.content = fp.read() 
-    
+        if (filename != 'index.htm'):
+            fp = open(filename)
+            self.content = fp.read() 
+        else:
+            dict = {
+                'name':'Ken',
+                'time':ctime()
+            }
+            self.content = render(filename,dict)
+
     def getResult(self):     #获取响应内容
         result = ''
         result += self.version + ' '
@@ -36,6 +49,7 @@ class ResponseBuilder(object):
         result += self.reason + '\r\n'
         result += 'Content-Length: ' + str(self.length) + '\r\n'
         result += 'Content-Type: ' + self.context_type + '\r\n'
+        print self.headers
         for key in self.headers:
             result += key + ': ' + self.headers[key] + '\r\n'
         result += '\r\n'

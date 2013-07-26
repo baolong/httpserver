@@ -13,6 +13,9 @@ class connection(object):
         self.connection = connection   #套接字
         self.client_ip = ip     #客户端IP地址
 
+    def __del__(self):
+        self.connection.close()
+
     def GetConnection():     #获取套接字
         return self.connection
 
@@ -30,6 +33,7 @@ class connection(object):
         headers = request_parse.GetHeaders()
         for key in headers:
             response.addHeader(key, headers[key])
-        response.writeContent()
+        response.writeContent(request_parse.GetPath())
         result = response.getResult()
         self.connection.send(result)
+        self.connection.close()
