@@ -11,21 +11,8 @@ class HttpRequestParser(object):
 
     def parse(self, request_data):
         #解析http请求
-        num = 0
-        list = request_data.splitlines(0)
-        while (list[0][num] != ' '):
-            self.method += list[0][num]
-            num += 1
-        num += 1
-        while (list[0][num] != ' '):
-            self.path += list[0][num]
-            num += 1
-        num += 1
-        for ch in list[0][num:]:
-            self.version += ch 
-        
-        
         list = request_data.split('\n')
+        self.method, self.path, self.version = list[0].split(' ')
         for str in list[1:]:
             key = ''
             value = ''
@@ -33,7 +20,6 @@ class HttpRequestParser(object):
                 break
             key, value = str.split(': ')
             self.headers[key] = value
-        print '请求:\n' + request_data
 
     def GetMethod(self):
         return self.method

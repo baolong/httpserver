@@ -11,7 +11,12 @@ def filename_to_type(filename):
         'jpg' : 'image/jpeg',
         'png' : 'image/png',
         'ico' : '*/*',
-        'py'  : '*/*'
+        'py'  : '*/*',
+        'xml' : '*/*',
+        'thmx': '*/*',
+        'pdf' : '*/*'
     } 
-    name, postfix = filename.split('.')
+    name = filename[::-1]
+    name, postfix = name.split('.',1)
+    postfix = name[::-1]
     return type[postfix]

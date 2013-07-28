@@ -3,7 +3,7 @@
 
 BUFSIZE = 1024
 import sys
-sys.path.append('/home/long/httpserver/src')
+sys.path.append('/home/long/web/src')
 import threading
 from http_request_parser import HttpRequestParser
 from response_builder import ResponseBuilder
@@ -28,6 +28,7 @@ class connection(object):
         request_parse.parse(request)       #解析请求
         response = ResponseBuilder()      #响应对象
         response.setHttpStatus('200')
+        response.setIp(self.client_ip)
         response.setHttpReason('OK')
         response.setHttpVersion(request_parse.GetVersion())
         headers = request_parse.GetHeaders()
